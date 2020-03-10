@@ -12,7 +12,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: [windows-2016, macos-latest, ubuntu-latest]
- 
+
         steps:
             - name: Checkout git repo
               uses: actions/checkout@v1
@@ -21,7 +21,7 @@ jobs:
               uses: actions/setup-node@v1
               with:
                 node-version: "11.9.0"
-            
+
             - name: Install dependencies
               run: npm install -f
 
@@ -39,7 +39,7 @@ jobs:
               run: tar -xf latest.gz
               shell: bash
               working-directory: ./downloads
-              
+
             - name: Move evolutiond binaries
               run: |
                 find ./downloads -type f -name "evolutiond*" -exec cp '{}' ./bin \;
@@ -77,4 +77,3 @@ jobs:
               with:
                 name: ${{ runner.OS }}
                 path: dist/electron-mat/Packaged
-
