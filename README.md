@@ -1,2 +1,4 @@
-# electron-wallet
-Repo to latest version of evolution-electron-wallet
+# Evolution Electron Wallet
+
+
+  * Repo to latest version of evolution-electron-wallet
