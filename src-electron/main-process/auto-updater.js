@@ -28,7 +28,7 @@ function checkForUpdate (onQuitAndInstall) {
         console.log(`Update available: ${info.version}`)
 
         const message = `Update ${info.version} found. Do you want to download the update?`
-        const detail = `View the release notes at: https://github.com/evolution/evolution-electron-wallet/releases/tag/v${info.version}`
+        const detail = `View the release notes at: https://github.com/evolution-project/electron-wallet/releases/tag/v${info.version}`
 
         dialog.showMessageBox({
             type: "info",

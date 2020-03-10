@@ -1,8 +1,8 @@
 {
   "name": "evolution-electron-wallet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "daemonVersion": "1.0.3",
-  "description": "Modern GUI interface for evolution Currency",
+  "description": "Modern GUI interface for Evolution Currency",
   "productName": "Evolution Electron Wallet",
   "repository": {
     "type": "git",
@@ -11,7 +11,7 @@
   "cordovaId": "com.evolution.wallet",
   "author": {
     "name": "evolution",
-    "email": "support@evolution-project.go.ro"
+    "email": "evlutionproject@protonmail.com"
   },
   "private": true,
   "scripts": {
