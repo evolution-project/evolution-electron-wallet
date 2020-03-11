@@ -1,7 +1,14 @@
+go to https://nodejs.org/en/ and install gui node
+
+
+
 # Evolution Electron Wallet
 
 
   * Repo to latest version of evolution-electron-wallet
+  
+  
+  
 
   #### Pre-requisites
 - Download latest [evolutiond](https://github.com/evolution-project/evolution/releases/latest)
