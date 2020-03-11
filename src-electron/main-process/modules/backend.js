@@ -172,6 +172,14 @@ export class Backend {
 
                 this.remotes = [
                     {
+                        host: "evox.supportcryptonight.com",
+                        port: "52922"
+                    },
+                    {
+                        host: "daemon.pool.gntl.co.uk",
+                        port: "52922"
+                    },
+                    {
                         host: "207.244.120.53",
                         port: "52922"
                     }
