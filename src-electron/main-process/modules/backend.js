@@ -61,7 +61,7 @@ export class Backend {
                 const daemons = {
                     mainnet: {
                         ...daemon,
-                        remote_host: "207.244.120.53",
+                        remote_host: "evox.supportcryptonight.com",
                         remote_port: 52922
                     },
                     stagenet: {
@@ -103,7 +103,7 @@ export class Backend {
                 },
                 daemon: {
                 type: "local_remote",
-                remote_host: "207.244.120.53",
+                remote_host: "evox.supportcryptonight.com",
                 remote_port: 52922,
                 p2p_bind_ip: "0.0.0.0",
                 p2p_bind_port: 52921,
@@ -171,16 +171,9 @@ export class Backend {
                 }
 
                 this.remotes = [
+
                     {
                         host: "evox.supportcryptonight.com",
-                        port: "52922"
-                    },
-                    {
-                        host: "daemon.pool.gntl.co.uk",
-                        port: "52922"
-                    },
-                    {
-                        host: "207.244.120.53",
                         port: "52922"
                     }
                 ]
@@ -299,7 +292,7 @@ export class Backend {
                   }
 
                   if (path) {
-                      const baseUrl = net_type === "testnet" ? "https://stageblocks.arqma.com/" : "http://evolution-project.go.ro:90/"
+                      const baseUrl = net_type === "testnet" ? "https://stageblocks.arqma.com/" : "https://explorer.evolutionproject.space/"
                       const url = `${baseUrl}/${path}/`
                       require("electron").shell.openExternal(url + params.id)
                   }
