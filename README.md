@@ -1,6 +1,4 @@
-go to https://nodejs.org/en/ and install gui node
-
-
+Big Thanks to ArQmA team for support.
 
 # Evolution Electron Wallet
 
