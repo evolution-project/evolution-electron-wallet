@@ -191,7 +191,7 @@ export class Pool {
     }
 
     checkHeight() {
-        let url = "https://evox.supportcryptonight.com/api/networkinfo"
+        let url = "https://explorer.evolutionproject.space/api/networkinfo"
         if(this.testnet) {
             url = "https://stageblocks.arqma.com/api/networkinfo"
         }
