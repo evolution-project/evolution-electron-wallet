@@ -1,7 +1,7 @@
 {
   "name": "evolution-electron-wallet",
-  "version": "1.0.6",
-  "daemonVersion": "1.0.3",
+  "version": "1.0.7",
+  "daemonVersion": "1.0.4",
   "description": "Modern GUI interface for Evolution Currency",
   "productName": "Evolution Electron Wallet",
   "repository": {
