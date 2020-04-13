@@ -49,8 +49,8 @@ export class Backend {
                     p2p_bind_port: 52921,
                     rpc_bind_ip: "127.0.0.1",
                     rpc_bind_port: 52922,
-                    zmq_rpc_bind_ip: "127.0.0.1",
-                    zmq_rpc_bind_port: 52923,
+                    zmq_bind_ip: "127.0.0.1",
+                    zmq_bind_port: 52923,
                     out_peers: -1,
                     in_peers: -1,
                     limit_rate_up: -1,
@@ -76,7 +76,7 @@ export class Backend {
                         type: "local",
                         p2p_bind_port: 54921,
                         rpc_bind_port: 54922,
-                        zmq_rpc_bind_port: 54923
+                        zmq_bind_port: 54923
                     }
                 }
 
@@ -109,8 +109,8 @@ export class Backend {
                 p2p_bind_port: 52921,
                 rpc_bind_ip: "127.0.0.1",
                 rpc_bind_port: 52922,
-                zmq_rpc_bind_ip: "127.0.0.1",
-                zmq_rpc_bind_port: 52923,
+                zmq_bind_ip: "127.0.0.1",
+                zmq_bind_port: 52923,
                 out_peers: 8,
                 in_peers: 0,
                 limit_rate_up: -1,
