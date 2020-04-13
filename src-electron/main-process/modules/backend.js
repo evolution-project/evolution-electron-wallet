@@ -270,6 +270,7 @@ export class Backend {
                 break;
 
             case "save_pool_config":
+                const originalServerState = this.config_data.pool.server.enabled
                 Object.keys(params).map(key => {
                     this.config_data.pool[key] = Object.assign(this.config_data.pool[key], params[key])
                 })
@@ -278,7 +279,17 @@ export class Backend {
                         config: this.config_data
                     })
                     this.pool.init(this.config_data)
+                    if(!originalServerState) {
+                        if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
+                            this.pool.startWithZmq()
+                        }
+                    } else {
+                        if (!this.config_data.pool.server.enabled) {
+                            this.pool.stop()
+                        }
+                    }
                 })
+
                 break
 
                 case "open_explorer":
