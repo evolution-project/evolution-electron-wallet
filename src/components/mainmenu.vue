@@ -48,7 +48,7 @@
 
             <div class="q-mt-md q-mb-lg external-links">
                 <p>
-                    <a @click="openExternal('http://evolution-project.go.ro/')" href="#">http://evolution-project.go.ro//</a>
+                    <a @click="openExternal('https://evolutionproject.space/')" href="#">https://evolutionproject.space</a>
                 </p>
                 <p>
                     <a @click="openExternal('https://github.com/evolution-project/evolution-electron-wallet')" href="#">Github</a>
