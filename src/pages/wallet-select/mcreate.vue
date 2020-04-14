@@ -1,7 +1,7 @@
 <template>
 <q-page class="create">
     <div class="fields q-mx-md q-mt-md">
-    <evolutionField :label="$t('fieldLabels.walletName')" :error="$v.wallet.name.$error">
+    <EvolutionField :label="$t('fieldLabels.walletName')" :error="$v.wallet.name.$error">
         <q-input
             v-model="wallet.name"
             @keyup.enter="create"
@@ -10,18 +10,18 @@
             :placeholder="$t('placeholders.walletName')"
             hide-underline
         />
-    </evolutionField>
+    </EvolutionField>
 
-        <evolutionField :label="$t('fieldLabels.seedLanguage')">
+        <EvolutionField :label="$t('fieldLabels.seedLanguage')">
             <q-select
                 v-model="wallet.language"
                 :options="languageOptions"
                 :dark="theme=='dark'"
                 hide-underline
             />
-        </evolutionField>
+        </EvolutionField>
 
-        <evolutionField :label="$t('fieldLabels.password')" optional>
+        <EvolutionField :label="$t('fieldLabels.password')" optional>
             <q-input
                 v-model="wallet.password"
                 @keyup.enter="create"
@@ -30,9 +30,9 @@
                 :placeholder="$t('placeholders.walletPassword')"
                 hide-underline
             />
-        </evolutionField>
+        </EvolutionField>
 
-        <evolutionField :label="$t('fieldLabels.confirmPassword')">
+        <EvolutionField :label="$t('fieldLabels.confirmPassword')">
             <q-input
                 v-model="wallet.password_confirm"
                 @keyup.enter="create"
@@ -40,7 +40,7 @@
                 :dark="theme=='dark'"
                 hide-underline
             />
-        </evolutionField>
+        </EvolutionField>
 
         <q-field>
             <q-btn color="primary" @click="create" :label="$t('buttons.createWallet')" />
@@ -53,7 +53,7 @@
 <script>
 import { required } from "vuelidate/lib/validators"
 import { mapState } from "vuex"
-import evolutionField from "components/evolution_field"
+import EvolutionField from "components/evolution_field"
 export default {
     data () {
         return {
@@ -167,7 +167,7 @@ export default {
         }
     },
     components: {
-        evolutionField
+        EvolutionField
     }
 }
 </script>

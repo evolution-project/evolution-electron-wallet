@@ -244,7 +244,7 @@ export default {
         deleteWallet: "Supprimer le portefeuille",
         exportWallet: "Portefeuille d'exportation",
         exportTransactions: "Transactions d'exportation",
-        exit: "Quitter le portefeuille evolution GUI",
+        exit: "Quitter le portefeuille Evolution GUI",
         importOldGUIWallet: "Importer le portefeuille depuis l’ancien GUI",
         manageKeyImages: "Gérer les images clés",
         openWallet: "Ouvrir le portefeuille",

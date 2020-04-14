@@ -2,7 +2,7 @@
 <q-page>
     <template v-if="!wallets.list.length">
         <div class="q-px-md q-py-lg">
-            <h2 class="q-my-sm text-weight-thin">Welcome to Evolution Wallet Atom</h2>
+            <h2 class="q-my-sm text-weight-thin">Welcome to Evolution Wallet</h2>
             <p>To get started, select one of the options below.</p>
 
         </div>

@@ -243,7 +243,7 @@ export default {
         deleteWallet: "Удалить Кошелек",
         exportTransactions: "Экспортные транзакции",
         exportWallet: "экспортный кошелек",
-        exit: "Закрыть Кошелек evolution",
+        exit: "Закрыть Кошелек Evolution",
         importOldGUIWallet: "Импортировать кошельки из старого GUI",
         manageKeyImages: "Управлять Ключевыми Образами",
         openWallet: "Открыть кошелек",

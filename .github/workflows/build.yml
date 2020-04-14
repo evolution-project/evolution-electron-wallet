@@ -1,4 +1,4 @@
-name: Evolution Electron Wallet Build and PUB
+name: Evolution Electron Wallet Build
 
 on:
     push:

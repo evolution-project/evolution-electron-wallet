@@ -242,7 +242,7 @@ export default {
         deleteWallet: "Wallet löschen",
         exportWallet: "Export Brieftasche",
         exportTransactions: "Transaktionen exportieren",
-        exit: "evolution GUI Wallet schliessen",
+        exit: "Evolution GUI Wallet schliessen",
         importOldGUIWallet: "Wallets von alter GUI importieren",
         manageKeyImages: "Key Images verwalten",
         openWallet: "Wallet öffnen",
@@ -327,7 +327,7 @@ export default {
         warnings: {
             noKeyImageExport: "Keine Key Images zum Exportieren gefunden",
             usingLocalNode: "Zugang zur Remote Node nicht möglich, wechsle zur lokalen Node",
-            usingRemoteNode: "evolutiond nicht gefunden, benutze eine Remote Node"
+            usingRemoteNode: "levolutiond nicht gefunden, benutze eine Remote Node"
         }
     },
     placeholders: {

@@ -48,9 +48,12 @@
 
             <div class="q-mt-md q-mb-lg external-links">
                 <p>
-                    <a @click="openExternal('https://evolutionproject.space/')" href="#">https://evolutionproject.space</a>
+                    <a @click="openExternal('https://evolutionproject.space/')" href="#">https://evolutionproject.space/</a>
                 </p>
                 <p>
+                    <a @click="openExternal('https://twitter.com/Evolution_EvoX')" href="#">Twitter</a> -
+                    <a @click="openExternal('https://discordapp.com/invite/erYnAQf')" href="#">Discord</a> -
+                    <a @click="openExternal('https://medium.com/@evolutionproject')" href="#">Medium</a> -
                     <a @click="openExternal('https://github.com/evolution-project/evolution-electron-wallet')" href="#">Github</a>
                 </p>
             </div>

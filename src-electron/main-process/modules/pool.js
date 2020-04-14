@@ -50,7 +50,7 @@ export class Pool {
 
         ryo_utils_promise.then(core_bridge => {
             this.core_bridge = core_bridge
-            
+
         })
 
         this.checkHeight().then(response => {
@@ -102,18 +102,17 @@ export class Pool {
             }
 
             this.config = JSON.parse(JSON.stringify(options.pool))
+
             this.blocks = {
                 current: null,
                 valid: []
             }
-            
             this.connections = {}
             if(this.daemon_type !== "local_zmq") {
 
                 if(update_work) {
-                    this.getBlock(true).catch(() => {})}
-
-
+                    this.getBlock(true).catch(() => {})
+                }
 
                 if(this.config.server.enabled) {
                     if(start && this.config.mining.address != "") {
@@ -126,12 +125,14 @@ export class Pool {
             if(update_vardiff) {
                 this.updateVarDiff()
             }
+
         } catch(error) {
             logger.log("error", "Failed to start pool")
             logger.log("error", error)
             this.sendGateway("show_notification", {type: "negative", message: "Pool failed to start", timeout: 2000})
         }
     }
+
     startWithZmq() {
         if(this.daemon_type === "local_zmq") {
             if(this.isPoolRunning) return
@@ -164,6 +165,7 @@ export class Pool {
                             })
             }
     }
+
     start() {
         if(this.daemon_type == "remote") {
             return false
@@ -253,12 +255,16 @@ export class Pool {
             this.watchdog()
         }, 240000)
         this.watchdog()
+
         // this.startJobRefreshInterval()
+
         this.startRetargetInterval()
     }
+
     randomBetween(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     }
+
     randomString() {
         var source = 'abcdefghijklmnopqrstuvwxyz'
         var target = [];
@@ -267,6 +273,8 @@ export class Pool {
         }
         return target.join('');
     }
+
+
     startZMQ(options) {
         this.dealer = zmq.socket('dealer')
         this.dealer.identity = this.randomString();
@@ -279,6 +287,7 @@ export class Pool {
                     this.addBlockAndInformMiners(json)
                 })
     }
+
     watchdog() {
         // check for desynced daemon and incorrect local clock
         this.checkHeight().then(response => {
@@ -428,7 +437,6 @@ export class Pool {
             })
             socket.write(data + "\n")
         }
-
         const { method, params } = json
         const miner = this.connections[params.id]
 
@@ -441,6 +449,7 @@ export class Pool {
         switch(method) {
 
             case "login":
+
                 const connection_id = uid()
                 const ip = socket.remoteAddress
                 const { login, pass, rigid } = params
@@ -502,7 +511,6 @@ export class Pool {
                 break
 
             case "submit":
-
                 const job_id = params.job_id
                 const hash = params.result
                 let nonce = params.nonce
@@ -616,32 +624,27 @@ export class Pool {
     findBlock(height) {
         return this.blocks.valid.filter(block => block.height == height).pop()
     }
+
     addBlockAndInformMiners(data, force=false) {
         try {
             const wallet_address= this.config.mining.address
             const uniform = this.config.mining.uniform || Object.keys(this.connections).length > 128
-
             if(data.hasOwnProperty("error")) {
-
                 logger.log("error", "Error polling get_block_template %j", [data.error.message])
                 return data.error.message
             }
             const block = data.result
+
             if(this.blocks == null || this.blocks.current == null || this.blocks.current.height < block.height || force) {
-
                 const address_abbr = wallet_address.substring(0, 5) + "..." + wallet_address.substring(wallet_address.length - 5)
-
                 logger.log("info", "New block to mine { address: %s, height: %d, difficulty: %d, uniform: %s }", [address_abbr, block.height, block.difficulty, uniform])
-
 
                 this.blocks.current = new Block(this, block, uniform)
 
                 this.blocks.valid.push(this.blocks.current)
 
                 while(this.blocks.valid.length > 5) {
-
                     this.blocks.valid.shift()
-
                 }
 
                 for(let connection_id in this.connections) {
@@ -653,6 +656,7 @@ export class Pool {
         catch(error) {console.log('sheit ', error)}
         return null
     }
+
     getBlock(force=false) {
         const wallet_address= this.config.mining.address
         const uniform = this.config.mining.uniform || Object.keys(this.connections).length > 128
@@ -755,6 +759,7 @@ export class Pool {
                 this.dealer = null
                 this.isPoolRunning = false
             }
+
             if(this.server) {
                 logger.log("warn", "Closing server")
                 this.server.close(() => {

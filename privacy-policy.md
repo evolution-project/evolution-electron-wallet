@@ -34,4 +34,4 @@ We may share information about you as follows or as otherwise described in this 
 We take reasonable measures to help protect information about you from loss, theft, misuse and unauthorized access, disclosure, alteration and destruction.
 
 ### 6. Contact Us
-If you have any questions about this Privacy Policy, please contact us at support@arqma.com
+If you have any questions about this Privacy Policy, please contact us at evolutionproject@protonmail.com

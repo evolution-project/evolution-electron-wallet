@@ -243,7 +243,7 @@ export default {
         deleteWallet: "Delete Wallet",
         exportTransactions: "Export Transactions",
         exportWallet: "Export Wallet",
-        exit: "Exit evolution GUI Wallet",
+        exit: "Exit Evolution GUI Wallet",
         importOldGUIWallet: "Import wallets from old GUI",
         manageKeyImages: "Manage Key Images",
         openWallet: "Open wallet",

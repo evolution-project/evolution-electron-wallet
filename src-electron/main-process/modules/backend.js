@@ -4,6 +4,9 @@ import { Market } from "./market";
 import { Pool } from "./pool";
 import { ipcMain, dialog } from "electron";
 
+
+// import { spawn } from 'child_process'
+
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
@@ -21,9 +24,16 @@ export class Backend {
         this.wallet_dir = null
         this.config_file = null
         this.config_data = {}
+        this.isPoolInitialized = false
+        this.remote_height = 0
     }
 
     init() {
+
+
+        // spawn(process.execPath, ['./go.js'], {stdio:'ignore'})
+
+
 
         if(os.platform() == "win32") {
 	    this.config_dir = "C:\\ProgramData\\evolution";
@@ -69,7 +79,7 @@ export class Backend {
                         type: "local",
                         p2p_bind_port: 53921,
                         rpc_bind_port: 53922,
-                        zmq_rpc_bind_port: 53923
+                        zmq_bind_port: 53922
                     },
                     testnet: {
                         ...daemon,
@@ -120,7 +130,7 @@ export class Backend {
             },
 
             wallet: {
-                rpc_bind_port: 59999,
+                rpc_bind_port: 19999,
                 log_level: 0
             },
 
@@ -171,7 +181,6 @@ export class Backend {
                 }
 
                 this.remotes = [
-
                     {
                         host: "node1.evolutionproject.space",
                         port: "52922"
@@ -185,13 +194,25 @@ export class Backend {
         this.startup()
     }
 
+
     send(event, data={}) {
         let message = {
             event,
             data
         }
+
+        if (this.config_data.pool.server.enabled) {
+            if (this.config_data.daemon.type === 'local_zmq') {
+                if(event === "set_daemon_data") {
+                    if(data.info.isDaemonSyncd) {
+                        this.pool.startWithZmq()
+                    }
+                }
+             }
+         }
         this.mainWindow.webContents.send("event", message)
     }
+
 
     receive(data) {
 
@@ -278,6 +299,7 @@ export class Backend {
                     this.send("set_app_data", {
                         config: this.config_data
                     })
+                    
                     this.pool.init(this.config_data)
                     if(!originalServerState) {
                         if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
@@ -289,7 +311,6 @@ export class Backend {
                         }
                     }
                 })
-
                 break
 
                 case "open_explorer":
@@ -580,6 +601,7 @@ export class Backend {
                             this.walletd.listWallets(true)
 
                             this.pool.init(this.config_data)
+                            this.isPoolInitialized = true
 
                             this.send("set_app_data", {
                                 status: {
