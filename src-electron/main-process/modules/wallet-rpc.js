@@ -984,8 +984,8 @@ console.log('success')
                 wallet.address_list.unused = wallet.address_list.unused.slice(0,10)
 
                 if(wallet.address_list.unused.length < num_unused_addresses &&
-                   !wallet.address_list.primary[0].address.startsWith("ar") &&
-                   !wallet.address_list.primary[0].address.startsWith("aRi")) {
+                   !wallet.address_list.primary[0].address.startsWith("evz") &&
+                   !wallet.address_list.primary[0].address.startsWith("evo")) {
                     for(let n = wallet.address_list.unused.length; n < num_unused_addresses; n++) {
                         this.sendRPC("create_address", {account_index: 0}).then((data) => {
                             wallet.address_list.unused.push(data.result)

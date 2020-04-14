@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "FormatEvolution",
+    name: "FormatArqma",
     props: {
         amount: {
             required: true

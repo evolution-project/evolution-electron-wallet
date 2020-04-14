@@ -35,7 +35,7 @@ let template = [
         submenu: [
             {
                 label: "Learn More",
-                click () { require("electron").shell.openExternal("https://evolutionproject.space/") }
+                click () { require("electron").shell.openExternal("http://evolution-project.go.ro/") }
             }
         ]
     }

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "FormatRyo",
+    name: "FormatEvolution",
     props: {
         amount: {
             required: true

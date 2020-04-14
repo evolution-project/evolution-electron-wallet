@@ -243,7 +243,7 @@ export default {
         deleteWallet: "Eliminar monedero",
         exportWallet: "Billetera de exportación",
         exportTransactions: "Transacciones de exportación",
-        exit: "Cerrar la interfaz del monedero Evolution",
+        exit: "Cerrar la interfaz del monedero evolution",
         importOldGUIWallet: "Importar monedero de una interfaz gráfica antigua",
         manageKeyImages: "Administrar Imágenes de Clave",
         openWallet: "Abrir monedero",

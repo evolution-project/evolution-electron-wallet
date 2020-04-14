@@ -243,7 +243,7 @@ export default {
         deleteWallet: "Apagar carteira",
         exportTransactions: "Transações de exportação",
         exportWallet: "Carteira de exportação",
-        exit: "Saír da Carteira GUI Evolution",
+        exit: "Saír da Carteira GUI evolution",
         importOldGUIWallet: "Importar carteiras da antiga carteira GUI",
         manageKeyImages: "Administrar Imagens de Chave",
         openWallet: "Abrir carteira",

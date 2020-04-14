@@ -1947,7 +1947,7 @@ return{_strlen:lb,_ge_mul8:Va,_keccak:db,_ge_scalarmult:Ta,_ge_fromfe_frombytes_
 
 var evolutionConfig = {
     coinUnitPlaces: 12,
-    coinSymbol: 'EVOX',
+    coinSymbol: 'EVO',
     coinName: 'Evolution',
     coinUriPrefix: 'evolution:',
     addressPrefix: 0x6362
