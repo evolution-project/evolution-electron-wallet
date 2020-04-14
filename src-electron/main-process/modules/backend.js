@@ -79,7 +79,7 @@ export class Backend {
                         type: "local",
                         p2p_bind_port: 53921,
                         rpc_bind_port: 53922,
-                        zmq_bind_port: 53922
+                        zmq_bind_port: 53923
                     },
                     testnet: {
                         ...daemon,
@@ -324,7 +324,7 @@ export class Backend {
                   }
 
                   if (path) {
-                      const baseUrl = net_type === "testnet" ? "https://stageblocks.arqma.com/" : "https://explorer.evolutionproject.space/"
+                      const baseUrl = net_type === "testnet" ? "https://explorer.evolutionproject.space/" : "https://explorer.evolutionproject.space/"
                       const url = `${baseUrl}/${path}/`
                       require("electron").shell.openExternal(url + params.id)
                   }
