@@ -32,7 +32,7 @@ export default {
         selectLocation: "VYBRAT UMÍSTĚNÍ",
         selectWalletFile: "VYBRAT SOUBOR PENĚŽENKY",
         send: "ODESLAT",
-        sendCoins: "ODESLAT ARQ",
+        sendCoins: "ODESLAT EVOX",
         serviceNode: "SERVICE NODE",
         settings: "NASTAVENÍ",
         showQRCode: "ZOBRAZIT QR KÓD",

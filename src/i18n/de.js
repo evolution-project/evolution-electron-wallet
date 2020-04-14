@@ -327,7 +327,7 @@ export default {
         warnings: {
             noKeyImageExport: "Keine Key Images zum Exportieren gefunden",
             usingLocalNode: "Zugang zur Remote Node nicht möglich, wechsle zur lokalen Node",
-            usingRemoteNode: "evolutiond nicht gefunden, benutze eine Remote Node"
+            usingRemoteNode: "levolutiond nicht gefunden, benutze eine Remote Node"
         }
     },
     placeholders: {

@@ -22,22 +22,22 @@ export const address = (input) => {
         try {
             if (/^[0-9A-Za-z]+$/.test(input)) {
                 switch(input.substring(0,3)) {
-                    case "evo":
+                    case "aRi":
                         resolve(input.length === 109)
                         break
-              //      case "evz":
-              //          resolve(input.length === 97)
-              //          break
-              //      case "evz":
-                //        resolve(input.length === 97)
-              //          break
-              //      case "evz":
-              //          resolve(input.length === 97)
-            //            break
-                    case "evz":
-                        resolve(input.length === 98)
+                    case "ar2":
+                        resolve(input.length === 97)
                         break
-                    case "evc":
+                    case "ar3":
+                        resolve(input.length === 97)
+                        break
+                    case "ar4":
+                        resolve(input.length === 97)
+                        break
+                    case "ar5":
+                        resolve(input.length === 97)
+                        break
+                    case "aRS":
                         resolve(input.length === 98)
                         break
 
