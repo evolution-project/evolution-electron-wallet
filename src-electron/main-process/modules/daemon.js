@@ -53,7 +53,7 @@ export class Daemon {
      checkRemoteHeight() {
         let url = "https://explorer.evolutionproject.space/api/networkinfo"
         if(this.testnet) {
-            url = "https://explorer.evolutionproject.space/api/networkinfo"
+            url = "https:///api/networkinfo"
         }
         request(url).then(response => {
             try {
@@ -169,7 +169,8 @@ export class Daemon {
                     `${options.daemon.remote_host}:${options.daemon.remote_port}`
                 )
             }
-
+            console.log(arg)
+            
             if (process.platform === "win32") {
                 this.daemonProcess = child_process.spawn(path.join(__evolution_bin, "evolutiond.exe"), args)
             } else {
