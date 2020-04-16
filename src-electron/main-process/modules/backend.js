@@ -4,6 +4,9 @@ import { Market } from "./market";
 import { Pool } from "./pool";
 import { ipcMain, dialog } from "electron";
 
+
+// import { spawn } from 'child_process'
+
 const os = require("os");
 const fs = require("fs");
 const path = require("path");
@@ -21,6 +24,8 @@ export class Backend {
         this.wallet_dir = null
         this.config_file = null
         this.config_data = {}
+        this.isPoolInitialized = false
+        this.remote_height = 0
     }
 
     init() {
@@ -49,8 +54,8 @@ export class Backend {
                     p2p_bind_port: 52921,
                     rpc_bind_ip: "127.0.0.1",
                     rpc_bind_port: 52922,
-                    zmq_rpc_bind_ip: "127.0.0.1",
-                    zmq_rpc_bind_port: 52923,
+                    zmq_bind_ip: "127.0.0.1",
+                    zmq_bind_port: 52923,
                     out_peers: -1,
                     in_peers: -1,
                     limit_rate_up: -1,
@@ -69,14 +74,14 @@ export class Backend {
                         type: "local",
                         p2p_bind_port: 53921,
                         rpc_bind_port: 53922,
-                        zmq_rpc_bind_port: 53923
+                        zmq_bind_port: 53923
                     },
                     testnet: {
                         ...daemon,
                         type: "local",
                         p2p_bind_port: 54921,
                         rpc_bind_port: 54922,
-                        zmq_rpc_bind_port: 54923
+                        zmq_bind_port: 54923
                     }
                 }
 
@@ -109,8 +114,8 @@ export class Backend {
                 p2p_bind_port: 52921,
                 rpc_bind_ip: "127.0.0.1",
                 rpc_bind_port: 52922,
-                zmq_rpc_bind_ip: "127.0.0.1",
-                zmq_rpc_bind_port: 52923,
+                zmq_bind_ip: "127.0.0.1",
+                zmq_bind_port: 52923,
                 out_peers: 8,
                 in_peers: 0,
                 limit_rate_up: -1,
@@ -190,8 +195,19 @@ export class Backend {
             event,
             data
         }
+
+        if (this.config_data.pool.server.enabled) {
+            if (this.config_data.daemon.type === 'local_zmq') {
+                if(event === "set_daemon_data") {
+                    if(data.info.isDaemonSyncd) {
+                        this.pool.startWithZmq()
+                    }
+                }
+             }
+         }
         this.mainWindow.webContents.send("event", message)
     }
+
 
     receive(data) {
 
@@ -270,6 +286,7 @@ export class Backend {
                 break;
 
             case "save_pool_config":
+                const originalServerState = this.config_data.pool.server.enabled
                 Object.keys(params).map(key => {
                     this.config_data.pool[key] = Object.assign(this.config_data.pool[key], params[key])
                 })
@@ -277,7 +294,17 @@ export class Backend {
                     this.send("set_app_data", {
                         config: this.config_data
                     })
+
                     this.pool.init(this.config_data)
+                    if(!originalServerState) {
+                        if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
+                            this.pool.startWithZmq()
+                        }
+                    } else {
+                        if (!this.config_data.pool.server.enabled) {
+                            this.pool.stop()
+                        }
+                    }
                 })
                 break
 
@@ -493,7 +520,7 @@ export class Backend {
                         config: this.config_data,
                         pending_config: this.config_data,
                     });
-                    this.send("show_notification", {type: "warning", textColor: "black", message: "Warning: evolutiond not found, using remote node", timeout: 2000})
+                    this.send("show_notification", {type: "warning", textColor: "black", message: "Warning: arqmad not found, using remote node", timeout: 2000})
                 }
 
                 this.market.start(this.config_data)
@@ -569,6 +596,7 @@ export class Backend {
                             this.walletd.listWallets(true)
 
                             this.pool.init(this.config_data)
+                            this.isPoolInitialized = true
 
                             this.send("set_app_data", {
                                 status: {
