@@ -258,6 +258,8 @@ export class Pool {
 
         // this.startJobRefreshInterval()
 
+        if(this.daemon_type !== "local_zmq")
+        
         this.startRetargetInterval()
     }
 
