@@ -1,6 +1,6 @@
 /**
- * arqma-electron-wallet
- * https://github.com/arqma/arqma-electron-wallet
+ * evolution-electron-wallet
+ * https://github.com/evolution/evolution-electron-wallet
  *
  * market.js
  *
@@ -20,7 +20,7 @@ export class Market {
         this.agent = new https.Agent({ keepAlive: true, maxSockets: 1 })
         this.queue = new queue(1, Infinity)
         this.options = null
-        this.endpoint = "/api/v3/coins/evolution/tickers"
+        this.endpoint = "/api/v1/get_markets_json.php?market=EVOX/BTC"
     }
 
     start (options) {

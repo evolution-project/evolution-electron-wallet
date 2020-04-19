@@ -41,6 +41,7 @@
 
             <p class="q-my-sm">Wallet Version: v{{version}}</p>
             <p class="q-my-sm">Daemon Version: v{{daemonVersion}}</p>
+            
             <p class="q-my-sm">Copyright (c) 2020 Evolution Project</p>
             <p class="q-my-sm">Copyright (c) 2018-2020, ArQmA Project</p>
             <p class="q-my-sm">Copyright (c) 2018-2020, Ryo Currency Project</p>
@@ -48,10 +49,10 @@
 
             <div class="q-mt-md q-mb-lg external-links">
                 <p>
-                    <a @click="openExternal('http://evolution-project.go.ro/')" href="#">http://evolution-project.go.ro//</a>
+                    <a @click="openExternal('http://evolutionproject.space/')" href="#">Evolution Project Official Website</a>
                 </p>
                 <p>
-                    <a @click="openExternal('https://github.com/evolution-project/evolution-electron-wallet')" href="#">Github</a>
+                    <a @click="openExternal('https://github.com/evolution-project/evolution-electron-wallet')" href="#">Evolution Electron Github Source</a>
                 </p>
             </div>
 

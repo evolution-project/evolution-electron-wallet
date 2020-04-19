@@ -5,36 +5,36 @@
             {{ $t('strings.checkTransaction.description') }}
         </div>
         <div>
-            <ArqmaField :label="$t('fieldLabels.transactionId')" :error="$v.txid.$error">
+            <EvolutionField :label="$t('fieldLabels.transactionId')" :error="$v.txid.$error">
                 <q-input v-model="txid"
                     :dark="theme=='dark'"
                     :placeholder="$t('placeholders.pasteTransactionId')"
                     @blur="$v.txid.$touch"
                     hide-underline
                 />
-            </ArqmaField>
-            <ArqmaField class="q-mt-md" :label="$t('fieldLabels.address')" :error="$v.address.$error" optional>
+            </EvolutionField>
+            <EvolutionField class="q-mt-md" :label="$t('fieldLabels.address')" :error="$v.address.$error" optional>
                 <q-input v-model="address"
                     :dark="theme=='dark'"
                     :placeholder="$t('placeholders.recipientWalletAddress')"
                     @blur="$v.address.$touch"
                     hide-underline
                 />
-            </ArqmaField>
-            <ArqmaField class="q-mt-md" :label="$t('fieldLabels.message')" optional>
+            </EvolutionField>
+            <EvolutionField class="q-mt-md" :label="$t('fieldLabels.message')" optional>
                 <q-input v-model="message"
                     :dark="theme=='dark'"
                     :placeholder="$t('placeholders.proveOptionalMessage')"
                     hide-underline
                 />
-            </ArqmaField>
-            <ArqmaField class="q-mt-md" :label="$t('fieldLabels.signature')" :error="$v.signature.$error">
+            </EvolutionField>
+            <EvolutionField class="q-mt-md" :label="$t('fieldLabels.signature')" :error="$v.signature.$error">
                 <q-input v-model="signature"
                     :dark="theme=='dark'"
                     :placeholder="$t('placeholders.pasteTransactionProof')"
                     hide-underline
                 />
-            </ArqmaField>
+            </EvolutionField>
             <q-field class="buttons q-pt-sm">
                 <q-btn color="primary" @click="check" :label="$t('buttons.check')" />
                 <q-btn color="secondary" @click="clear" :label="$t('buttons.clear')" v-if="canClear"/>
@@ -51,7 +51,7 @@
             </div>
             <div class="q-mb-sm" v-if="status.state.received != null">
                 <div class="title">{{ $t('strings.checkTransaction.infoTitles.received') }}</div>
-                <div><FormatArqma :amount="status.state.received" raw-value /></div>
+                <div><FormatEvolution :amount="status.state.received" raw-value /></div>
             </div>
             <div class="q-mb-sm" v-if="status.state.in_pool != null">
                 <div class="title">{{ $t('strings.checkTransaction.infoTitles.inPool') }}</div>
@@ -71,8 +71,8 @@ import { mapState } from "vuex"
 import { required } from "vuelidate/lib/validators"
 import { address } from "src/validators/common"
 import { i18n } from "plugins/i18n"
-import ArqmaField from "components/arqma_field"
-import FormatArqma from "components/format_arqma"
+import EvolutionField from "components/evolution_field"
+import FormatEvolution from "components/format_evolution"
 
 export default {
     name: "CheckTransaction",
@@ -176,8 +176,8 @@ export default {
         }
     },
     components: {
-        ArqmaField,
-        FormatArqma
+        EvolutionField,
+        FormatEvolution
     }
 }
 </script>

@@ -141,7 +141,7 @@
                         </q-field>
                     </div>
                     <div class="col-6">
-                        <q-field>
+                    <!--    <q-field>
                             <q-checkbox v-model="enableStats" label="Privately Share Hashrate" />
                             <q-btn
                                 @click="modals.stats = true"
@@ -151,7 +151,7 @@
                                 size="sm"
                                 dense round flat
                                 />
-                        </q-field>
+                        </q-field>  -->
                     </div>
                     <div class="col-3">
                         <span>Pool status:</span>
@@ -410,13 +410,19 @@
             </div>
         </div>
 
+        <div v-if="page=='stats'">
+        <div class="q-layout-page">
+          <webview src="https://pool.evolutionproject.space/" autosize="on" minwidth="480" minheight="640"></webview>
+        </div>
+        </div>
+
         <div v-if="page=='blocks'">
             <div class="q-pa-md">
                 <h6 class="text-weight-light q-mt-xs q-mb-md">Blocks Found</h6>
 
                 <template v-if="pool.blocks.length == 0">
                     <div class="q-pa-sm q-mt-sm text-weight-light">
-                        No blocks found
+                        No blocks found keep digging
                     </div>
                 </template>
                 <template v-else>
@@ -894,9 +900,9 @@ export default {
                 bindPort: { between: between(1024, 65535) },
             },
             varDiff: {
-                startDiff: { between: between(1000, 100000000) },
-                minDiff: { between: between(1000, 100000000) },
-                maxDiff: { between: between(1000, 100000000) },
+                startDiff: { between: between(1000, 10000000) },
+                minDiff: { between: between(1000, 10000000) },
+                maxDiff: { between: between(1000, 10000000) },
                 targetTime: { between: between(15, 600) },
                 retargetTime: { between: between(30, 1200) },
                 variancePercent: { between: between(20, 80) },
@@ -941,11 +947,11 @@ export default {
                     enabled: true,
                     startDiff: 5000,
                     minDiff: 1000,
-                    maxDiff: 100000000,
-                    targetTime: 30,
+                    maxDiff: 10000000,
+                    targetTime: 35,
                     retargetTime: 60,
-                    variancePercent: 30,
-                    maxJump: 100,
+                    variancePercent: 35,
+                    maxJump: 50,
                     fixedDiffSeparator: "."
                 },
             },
@@ -953,11 +959,11 @@ export default {
                 enabled: true,
                 startDiff: 5000,
                 minDiff: 1000,
-                maxDiff: 100000000,
-                targetTime: 30,
+                maxDiff: 10000000,
+                targetTime: 35,
                 retargetTime: 60,
-                variancePercent: 30,
-                maxJump: 100,
+                variancePercent: 35,
+                maxJump: 50,
                 fixedDiffSeparator: "."
             },
             cols_blocks: [
@@ -1123,6 +1129,20 @@ export default {
         Identicon
     }
 }
+//added
+onload = () => {
+  const webview = document.querySelector('webview')
+  const indicator = document.querySelector('.indicator')
+  const loadstart = () => {
+    indicator.innerText = 'loading...'
+  }
+  const loadstop = () => {
+    indicator.innerText = ''
+  }
+  webview.addEventListener('did-start-loading', loadstart)
+  webview.addEventListener('did-stop-loading', loadstop)
+}
+
 </script>
 
 <style lang="scss">
