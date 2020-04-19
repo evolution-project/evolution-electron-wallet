@@ -104,7 +104,7 @@ export class Backend {
                 notify_empty_password: true,
                 minimize_to_tray: false,
                 autostart: false,
-                timeout: 600000 // 10 minutes
+                timeout: 300000 // 5 minutes
                 },
                 daemon: {
                 type: "local_remote",
@@ -146,11 +146,11 @@ export class Backend {
                     enabled: true,
                     startDiff: 5000,
                     minDiff: 1000,
-                    maxDiff: 100000000,
-                    targetTime: 30,
+                    maxDiff: 10000000,
+                    targetTime: 35,
                     retargetTime: 60,
-                    variancePercent: 30,
-                    maxJump: 100,
+                    variancePercent: 35,
+                    maxJump: 50,
                     fixedDiffSeparator: ".",
                 },
             },
@@ -161,10 +161,10 @@ export class Backend {
                 },
                 exchange: {
                     protocol: "https://",
-                    hostname: "api.coingecko.com",
+                    hostname: "cratex.io/api",
                     port: 443,
                     coin: "evolution",
-                    endpoint: "/api/v3/coins/evolution/tickers"
+                    endpoint: "/api/v1/get_markets_json.php?market=EVOX/BTC"
                 }
             },
             daemons: objectAssignDeep({}, daemons),
@@ -199,8 +199,8 @@ export class Backend {
         if (this.config_data.pool.server.enabled) {
             if (this.config_data.daemon.type === 'local_zmq') {
                 if(event === "set_daemon_data") {
-                    if(data.info.isDaemonSyncd) {
-                        this.pool.startWithZmq()
+                        if(data.info && data.info.hasOwnProperty("isDaemonSyncd") && data.info.isDaemonSyncd) {
+                            this.pool.startWithZmq()
                     }
                 }
              }
@@ -229,9 +229,9 @@ export class Backend {
                     this.market.handle(data)
                 }
                 break;
-          }
+            }
         }
-
+        
     handle(data) {
 
         let params = data.data
@@ -319,7 +319,7 @@ export class Backend {
                   }
 
                   if (path) {
-                      const baseUrl = net_type === "testnet" ? "https://stageblocks.arqma.com/" : "https://explorer.evolutionproject.space/"
+                      const baseUrl = net_type === "testnet" ? "https://stageblocks.evolutionproject.space/" : "https://explorer.evolutionproject.space/"
                       const url = `${baseUrl}/${path}/`
                       require("electron").shell.openExternal(url + params.id)
                   }
@@ -520,7 +520,7 @@ export class Backend {
                         config: this.config_data,
                         pending_config: this.config_data,
                     });
-                    this.send("show_notification", {type: "warning", textColor: "black", message: "Warning: arqmad not found, using remote node", timeout: 2000})
+                    this.send("show_notification", {type: "warning", textColor: "black", message: "Warning: evolutiond not found, using remote node", timeout: 2000})
                 }
 
                 this.market.start(this.config_data)

@@ -110,7 +110,8 @@ module.exports = function (ctx) {
                 "QTh",
                 "QTr",
                 "QTd",
-                "QTableColumns"
+                "QTableColumns",
+                "QSlider"
             ],
             directives: [
                 "Ripple",
@@ -208,7 +209,7 @@ module.exports = function (ctx) {
 
                 appId: "com.evolution.electron-wallet",
                 productName: "Evolution Electron Wallet",
-                copyright: "Copyright © 2020 Evolution, Arqma Project, 2018-2020 Ryo/Loki Currency Project",
+                copyright: "Copyright © 2020 Evolution, Arqma Project, Ryo/Loki Project",
                 afterSign: "build/notarize.js",
                 artifactName: "evolution-electron-wallet-${version}-${os}.${ext}",
 

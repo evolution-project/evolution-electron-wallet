@@ -11,7 +11,7 @@ export default {
                 notify_no_payment_id: true,
                 notify_empty_password: true,
                 minimize_to_tray: false,
-                timeout: 600000 // 10 minutes
+                timeout: 300000 // 5 minutes
             }
         },
         pending_config: {
@@ -113,10 +113,10 @@ export default {
         },
         exchange: {
             protocol: "https://",
-            hostname: "api.coingecko.com",
+            hostname: "cratex.io/api",
             port: 443,
             coin: "evolution",
-            endpoint: "/api/v3/coins/evolution/tickers"
+            endpoint: "/api/v1/get_markets_json.php?market=EVOX/BTC"
         }
     }
 }
