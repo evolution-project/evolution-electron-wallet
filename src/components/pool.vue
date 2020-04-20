@@ -1,6 +1,6 @@
 <template>
 <q-modal v-model="isVisible" maximized class="pool-modal">
-    <q-modal-layout>
+    <q-modal-layout class="noscrollers">
         <q-toolbar slot="header" color="dark" inverted>
             <q-btn flat round dense @click="isVisible = false" icon="reply" />
             <q-toolbar-title shrink>
@@ -409,11 +409,11 @@
                 </p>
             </div>
         </div>
-
-        <div v-if="page=='stats'">
-        <div class="q-layout-page">
-          <webview src="https://pool.evolutionproject.space/" autosize="on" minwidth="480" minheight="640"></webview>
-        </div>
+                                            <!-- stats added -->
+        <div v-if="page=='stats'"> 
+            <div class="q-layout-page">
+              <webview src="https://solo.evolutionproject.space/" autosize="on" minwidth="480" minheight="640"></webview>
+            </div>
         </div>
 
         <div v-if="page=='blocks'">
@@ -694,6 +694,7 @@ export default {
                 {label: "Dashboard", value: "main", icon: "dashboard"},
                 {label: "Workers", value: "workers", icon: "person"},
                 {label: "Blocks", value: "blocks", icon: "view_list"},
+                {label: "Stats", value: "stats", icon: "view_list"}, //stats button added
             ]
             return tabs
         },
@@ -937,7 +938,7 @@ export default {
                 server: {
                     enabled: false,
                     bindIP: "0.0.0.0",
-                    bindPort: 3333,
+                    bindPort: 10333,
                 },
                 mining: {
                     address: "",
@@ -1129,7 +1130,7 @@ export default {
         Identicon
     }
 }
-//added
+//added webview
 onload = () => {
   const webview = document.querySelector('webview')
   const indicator = document.querySelector('.indicator')
@@ -1219,5 +1220,15 @@ body.dark {
         box-shadow: inset rgba(255, 255, 255, 0.6) 0 2px 2px, inset rgba(0, 0, 0, 0.3) 0 -2px 6px;
         border-radius: 2px;
     }
+}
+//added for webview
+.noscrollers {
+    overflow: hidden;
+}
+webview {
+    display: 1 1 0;
+    border: none;
+    height: 100vh;
+    width: 100vw;
 }
 </style>

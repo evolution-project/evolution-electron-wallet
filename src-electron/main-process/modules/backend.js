@@ -133,7 +133,7 @@ export class Backend {
                 server: {
                     enabled: false,
                     bindIP: "0.0.0.0",
-                    bindPort: 3333,
+                    bindPort: 10333,
                 },
                 mining: {
                     address: "",

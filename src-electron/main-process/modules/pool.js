@@ -65,8 +65,8 @@ export class Pool {
     }
 
     init(options) {
-//      if(this.daemon_type == "remote") {          
-        if(this.daemon_type.includes("remote")) {   // this stops the solo mining in local + remote
+      if(this.daemon_type == "remote") {          
+//        if(this.daemon_type.includes("remote")) {   // this stops the solo mining in local + remote
             return false
         }
 
