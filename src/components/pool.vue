@@ -412,7 +412,7 @@
                                             <!-- stats added -->
         <div v-if="page=='stats'"> 
             <div class="q-layout-page">
-              <webview src="https://solo.evolutionproject.space/" autosize="on" minwidth="480" minheight="640"></webview>
+              <webview src="https://solo.evolutionproject.space/" autosize="on"></webview>
             </div>
         </div>
 
