@@ -66,7 +66,7 @@ export class Backend {
                 const daemons = {
                     mainnet: {
                         ...daemon,
-                        remote_host: "node1.evolutionproject.space",
+                        remote_host: "node.evolutionproject.space",
                         remote_port: 52922
                     },
                     stagenet: {
@@ -108,7 +108,7 @@ export class Backend {
                 },
                 daemon: {
                 type: "local_remote",
-                remote_host: "node1.evolutionproject.space",
+                remote_host: "node.evolutionproject.space",
                 remote_port: 52922,
                 p2p_bind_ip: "0.0.0.0",
                 p2p_bind_port: 52921,
@@ -178,7 +178,7 @@ export class Backend {
                 this.remotes = [
 
                     {
-                        host: "node1.evolutionproject.space",
+                        host: "node.evolutionproject.space",
                         port: "52922"
                     }
                 ]
