@@ -287,7 +287,7 @@ checkRemoteHeight() {
                 if (params.enabled) {
                     this.heartbeat_slow = setInterval(() => {
                         this.heartbeatSlowAction()
-                    }, 10 * 1000) // 30 seconds
+                    }, 10 * 1000) // 10 seconds
                     this.heartbeatSlowAction()
                 }
                 break

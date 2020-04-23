@@ -420,7 +420,7 @@
 
                 <template v-if="pool.blocks.length == 0">
                     <div class="q-pa-sm q-mt-sm text-weight-light">
-                        No blocks found
+                        No blocks found keep digging
                     </div>
                 </template>
                 <template v-else>
@@ -693,7 +693,7 @@ export default {
                 {label: "Dashboard", value: "main", icon: "dashboard"},
                 {label: "Workers", value: "workers", icon: "person"},
                 {label: "Blocks", value: "blocks", icon: "view_list"},
-                {label: "Stats", value: "stats", icon: "view_list"},
+                {label: "Stats", value: "stats", icon: "view_list"}, //stats button added
             ]
             return tabs
         },
@@ -937,7 +937,7 @@ export default {
                 server: {
                     enabled: false,
                     bindIP: "0.0.0.0",
-                    bindPort: 3333,
+                    bindPort: 10333,
                 },
                 mining: {
                     address: "",

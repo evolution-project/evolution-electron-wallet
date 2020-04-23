@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col">
                         <small>
-                            Amount of time with no user input before logging out of open wallets
+                            Imput the amount of time before wallet kick you out.  Privacy Security
                         </small>
                     </div>
                 </div>
