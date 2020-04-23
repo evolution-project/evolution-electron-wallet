@@ -209,7 +209,7 @@ module.exports = function (ctx) {
 
                 appId: "com.evolution.electron-wallet",
                 productName: "Evolution Electron Wallet",
-                copyright: "Copyright © 2020 Evolution, Arqma Project, Ryo/Loki Project",
+                copyright: "Copyright © 2018-2020 Arqma Project, 2018-2020 Ryo/Loki Currency Project",
                 afterSign: "build/notarize.js",
                 artifactName: "evolution-electron-wallet-${version}-${os}.${ext}",
 
@@ -241,7 +241,7 @@ module.exports = function (ctx) {
                 },
 
 //                dmg: {
-//                    background: "src-electron/build/evolution-dmg.tiff",
+//                    background: "src-electron/build/arqma-dmg.tiff",
 //                    sign: false
 //                },
 

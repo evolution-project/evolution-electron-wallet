@@ -220,7 +220,7 @@ export class Pool {
     checkHeight() {
         let url = "https://explorer.evolutionproject.space/api/networkinfo"
         if(this.testnet) {
-            url = "https://stageblocks.evolutionproject.space/api/networkinfo"
+            url = "https://explorer.evolutionproject.space/api/networkinfo"
         }
         return request(url)
     }

@@ -57,42 +57,43 @@ export class Backend {
 
         this.config_file = path.join(this.config_dir, "gui", "config.json")
 
-                const daemon = {
-                    type: "remote",
-                    p2p_bind_ip: "0.0.0.0",
-                    p2p_bind_port: 52921,
-                    rpc_bind_ip: "127.0.0.1",
-                    rpc_bind_port: 52922,
-                    zmq_bind_ip: "127.0.0.1",
-                    zmq_bind_port: 52923,
-                    out_peers: -1,
-                    in_peers: -1,
-                    limit_rate_up: -1,
-                    limit_rate_down: -1,
-                    log_level: 0
-                }
+                        const daemon = {
+                            type: "remote",
+                            p2p_bind_ip: "0.0.0.0",
+                            p2p_bind_port: 52921,
+                            rpc_bind_ip: "127.0.0.1",
+                            rpc_bind_port: 52922,
+                            zmq_bind_ip: "127.0.0.1",
+                            zmq_bind_port: 52923,
+                            out_peers: -1,
+                            in_peers: -1,
+                            limit_rate_up: -1,
+                            limit_rate_down: -1,
+                            log_level: 0
+                        }
 
-                const daemons = {
-                    mainnet: {
-                        ...daemon,
-                        remote_host: "eu.evolutionproject.space",
-                        remote_port: 52922
-                    },
-                    stagenet: {
-                        ...daemon,
-                        type: "local",
-                        p2p_bind_port: 53921,
-                        rpc_bind_port: 53922,
-                        zmq_bind_port: 53923
-                    },
-                    testnet: {
-                        ...daemon,
-                        type: "local",
-                        p2p_bind_port: 54921,
-                        rpc_bind_port: 54922,
-                        zmq_bind_port: 54923
-                    }
-                }
+                        const daemons = {
+                            mainnet: {
+                                ...daemon,
+                                remote_host: "solo.evolutionproject.space",
+                                remote_port: 52922
+                            },
+                            stagenet: {
+                                ...daemon,
+                                type: "local",
+                                p2p_bind_port: 53921,
+                                rpc_bind_port: 53922,
+                                zmq_bind_port: 53923
+                            },
+                            testnet: {
+                                ...daemon,
+                                type: "local",
+                                p2p_bind_port: 54921,
+                                rpc_bind_port: 54922,
+                                zmq_bind_port: 54923
+                            }
+                        }
+
 
                 // Default values
                 this.defaults = {
@@ -113,11 +114,11 @@ export class Backend {
                 notify_empty_password: true,
                 minimize_to_tray: false,
                 autostart: false,
-                timeout: 300000 // 5 minutes
+                timeout: 600000 // 10 minutes
                 },
                 daemon: {
                 type: "local_remote",
-                remote_host: "eu.evolutionproject.space",
+                remote_host: "solo.evolutionproject.space",
                 remote_port: 52922,
                 p2p_bind_ip: "0.0.0.0",
                 p2p_bind_port: 52921,
@@ -142,7 +143,7 @@ export class Backend {
                 server: {
                     enabled: false,
                     bindIP: "0.0.0.0",
-                    bindPort: 10333,
+                    bindPort: 3333,
                 },
                 mining: {
                     address: "",
@@ -155,11 +156,11 @@ export class Backend {
                     enabled: true,
                     startDiff: 5000,
                     minDiff: 1000,
-                    maxDiff: 10000000,
-                    targetTime: 35,
+                    maxDiff: 1000000,
+                    targetTime: 45,
                     retargetTime: 60,
-                    variancePercent: 35,
-                    maxJump: 50,
+                    variancePercent: 45,
+                    maxJump: 30,
                     fixedDiffSeparator: ".",
                 },
             },
@@ -170,12 +171,13 @@ export class Backend {
                 },
                 exchange: {
                     protocol: "https://",
-                    hostname: "cratex.io/api",
+                    hostname: "api.coingecko.com",
                     port: 443,
                     coin: "evolution",
-                    endpoint: "/api/v1/get_markets_json.php?market=EVOX/BTC"
+                    endpoint: "/api/v3/coins/evox/tickers"
                 }
             },
+
             daemons: objectAssignDeep({}, daemons),
         }
         this.config_data = {
@@ -184,14 +186,6 @@ export class Backend {
 
                 }
 
-                this.remotes = [
-
-                    {
-                        host: "eu.evolutionproject.space",
-                        port: "52922"
-                    }
-                ]
-
         ipcMain.on("event", (event, data) => {
             this.receive(data)
         })
@@ -199,122 +193,123 @@ export class Backend {
         this.startup()
     }
 
+
     send(event, data={}) {
-          let message = {
-              event,
-              data
+        let message = {
+            event,
+            data
+        }
+
+        if (this.config_data.pool.server.enabled) {
+            if (this.config_data.daemon.type === 'local_zmq') {
+                if(event === "set_daemon_data") {
+                    if(data.info && data.info.hasOwnProperty("isDaemonSyncd") && data.info.isDaemonSyncd) {
+                        this.pool.startWithZmq()
+                    }
+                }
+             }
+         }
+        this.mainWindow.webContents.send("event", message)
+    }
+
+
+    receive(data) {
+
+        // route incoming request to either the daemon, wallet, or here
+        switch (data.module) {
+            case "core":
+                this.handle(data);
+                break;
+            case "daemon":
+                if (this.daemon) {
+                    this.daemon.handle(data);
+                }
+                break;
+            case "wallet":
+                if (this.walletd) {
+                    this.walletd.handle(data);
+                }
+                if (this.market) {
+                    this.market.handle(data)
+                }
+                break;
           }
+        }
 
-          if (this.config_data.pool.server.enabled) {
-              if (this.config_data.daemon.type === 'local_zmq') {
-                  if(event === "set_daemon_data") {
-                      if(data.info && data.info.hasOwnProperty("isDaemonSyncd") && data.info.isDaemonSyncd) {
-                          this.pool.startWithZmq()
-                      }
-                  }
-               }
-           }
-          this.mainWindow.webContents.send("event", message)
-      }
+    handle(data) {
 
+        let params = data.data
+        switch (data.method) {
+          case "set_language":
+            this.send("set_language", { lang: params.lang })
+            break
 
-      receive(data) {
+            case "quick_save_config":
+                // save only partial config settings
+                Object.keys(params).map(key => {
+                    this.config_data[key] = Object.assign(this.config_data[key], params[key])
+                })
+                fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
+                    this.send("set_app_data", {
+                        config: params,
+                        pending_config: params
+                    })
+                })
+                break
 
-          // route incoming request to either the daemon, wallet, or here
-          switch (data.module) {
-              case "core":
-                  this.handle(data);
-                  break;
-              case "daemon":
-                  if (this.daemon) {
-                      this.daemon.handle(data);
-                  }
-                  break;
-              case "wallet":
-                  if (this.walletd) {
-                      this.walletd.handle(data);
-                  }
-                  if (this.market) {
-                      this.market.handle(data)
-                  }
-                  break;
-            }
-          }
+            case "save_config":
+                // check if config has changed
+                let config_changed = false
+                Object.keys(this.config_data).map(i => {
+                    if(i == "appearance" || i == "pool") return
+                    Object.keys(this.config_data[i]).map(j => {
+                        if(this.config_data[i][j] !== params[i][j])
+                            config_changed = true
+                    })
+                })
+            case "save_config_init":
+                delete params.pool
+                Object.keys(params).map(key => {
+                    this.config_data[key] = Object.assign(this.config_data[key], params[key])
+                });
+                fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
 
-      handle(data) {
+                    if(data.method == "save_config_init") {
+                        this.startup();
+                    } else {
+                        this.send("set_app_data", {
+                            config: this.config_data,
+                            pending_config: this.config_data,
+                        })
+                        if(config_changed) {
+                            this.send("settings_changed_reboot")
+                        }
+                    }
+                });
+                break;
 
-          let params = data.data
-          switch (data.method) {
-            case "set_language":
-              this.send("set_language", { lang: params.lang })
-              break
+            case "save_pool_config":
+                const originalServerState = this.config_data.pool.server.enabled
+                Object.keys(params).map(key => {
+                    this.config_data.pool[key] = Object.assign(this.config_data.pool[key], params[key])
+                })
+                fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
+                    this.send("set_app_data", {
+                        config: this.config_data
+                    })
 
-              case "quick_save_config":
-                  // save only partial config settings
-                  Object.keys(params).map(key => {
-                      this.config_data[key] = Object.assign(this.config_data[key], params[key])
-                  })
-                  fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
-                      this.send("set_app_data", {
-                          config: params,
-                          pending_config: params
-                      })
-                  })
-                  break
-
-              case "save_config":
-                  // check if config has changed
-                  let config_changed = false
-                  Object.keys(this.config_data).map(i => {
-                      if(i == "appearance" || i == "pool") return
-                      Object.keys(this.config_data[i]).map(j => {
-                          if(this.config_data[i][j] !== params[i][j])
-                              config_changed = true
-                      })
-                  })
-              case "save_config_init":
-                  delete params.pool
-                  Object.keys(params).map(key => {
-                      this.config_data[key] = Object.assign(this.config_data[key], params[key])
-                  });
-                  fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
-
-                      if(data.method == "save_config_init") {
-                          this.startup();
-                      } else {
-                          this.send("set_app_data", {
-                              config: this.config_data,
-                              pending_config: this.config_data,
-                          })
-                          if(config_changed) {
-                              this.send("settings_changed_reboot")
-                          }
-                      }
-                  });
-                  break;
-
-              case "save_pool_config":
-                  const originalServerState = this.config_data.pool.server.enabled
-                  Object.keys(params).map(key => {
-                      this.config_data.pool[key] = Object.assign(this.config_data.pool[key], params[key])
-                  })
-                  fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
-                      this.send("set_app_data", {
-                          config: this.config_data
-                      })
-
-                      this.pool.init(this.config_data)
-                      if(!originalServerState) {
-                          if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
-                              this.pool.startWithZmq()
-                          }
-                      } else {
-                          if (!this.config_data.pool.server.enabled) {
-                              this.pool.stop()
-                          }
-                      }
-                  })
-                  break
+                    this.pool.init(this.config_data)
+                    if(!originalServerState) {
+                        if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
+                            this.pool.startWithZmq()
+                        }
+                    } else {
+                        if (!this.config_data.pool.server.enabled) {
+                            this.pool.stop()
+                        }
+                    }
+                })
+                break
 
                 case "open_explorer":
                   const { net_type } = this.config_data.app

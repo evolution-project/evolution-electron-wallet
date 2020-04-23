@@ -23,6 +23,7 @@ export class Daemon {
         this.zmq_enabled = false
     }
 
+
     checkVersion() {
         return new Promise((resolve, reject) => {
             if (process.platform === "win32") {
@@ -49,49 +50,29 @@ export class Daemon {
         })
     }
 
-checkRemoteHeight() {
-     let url = "https://explorer.evolutionproject.space/api/networkinfo"
-     if(this.testnet) {
-         url = "https://stageblocks.evolution.com/api/networkinfo"
-     }
-     request(url).then(response => {
-         try {
-             const json = JSON.parse(response)
-             if(json === null || typeof json !== "object" || !json.hasOwnProperty("data")) {
-                 return
-             }
-             let desynced = false, system_clock_error = false
-             if(json.data.hasOwnProperty("height") && this.blocks.current != null) {
-                 this.remote_height = json.data.height
-             }
-             this.remote_height = 0
-         } catch(error) {
-             this.remote_height = 0
-         }
-     });
- }
+     checkRemoteHeight() {
+        let url = "https://explorer.evolutionproject.space/api/networkinfo"
+        if(this.testnet) {
+            url = "https://explorer.evolutionproject.space/api/networkinfo"
+        }
+        request(url).then(response => {
+            try {
+                const json = JSON.parse(response)
+                if(json === null || typeof json !== "object" || !json.hasOwnProperty("data")) {
+                    return
+                }
+                let desynced = false, system_clock_error = false
+                if(json.data.hasOwnProperty("height") && this.blocks.current != null) {
+                    this.remote_height = json.data.height
+                }
+                this.remote_height = 0
+            } catch(error) {
+                this.remote_height = 0
+            }
+        });
+    }
 
- checkRemoteDaemon(options) {
-     if(options.daemon.type == "local") {
-         return new Promise((resolve, reject) => {
-             resolve({
-                 result: {
-                     mainnet: !options.app.testnet,
-                     testnet: options.app.testnet,
-                 }
-             })
-         })
-     } else {
-         let uri = `http://${options.daemon.remote_host}:${options.daemon.remote_port}/json_rpc`
-         return new Promise((resolve, reject) => {
-             this.sendRPC("get_info", {}, uri).then((data) => {
-                 resolve(data)
-             })
-         })
-     }
- }
-
- checkRemoteDaemon(options) {
+    checkRemoteDaemon(options) {
         if(options.daemon.type == "local") {
             return new Promise((resolve, reject) => {
                 resolve({
@@ -287,7 +268,7 @@ checkRemoteHeight() {
                 if (params.enabled) {
                     this.heartbeat_slow = setInterval(() => {
                         this.heartbeatSlowAction()
-                    }, 10 * 1000) // 10 seconds
+                    }, 10 * 1000) // 30 seconds
                     this.heartbeatSlowAction()
                 }
                 break
