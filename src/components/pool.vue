@@ -409,20 +409,18 @@
                 </p>
             </div>
         </div>
-                                            <!-- stats added -->
-        <div v-if="page=='stats'"> 
+        <div v-if="page=='stats'">
             <div class="q-layout-page">
-              <webview src="https://solo.evolutionproject.space/" autosize="on"></webview>
+              <webview src="https://solo.evolutionproject.space/" autosize="on" ></webview>
             </div>
         </div>
-
         <div v-if="page=='blocks'">
             <div class="q-pa-md">
                 <h6 class="text-weight-light q-mt-xs q-mb-md">Blocks Found</h6>
 
                 <template v-if="pool.blocks.length == 0">
                     <div class="q-pa-sm q-mt-sm text-weight-light">
-                        No blocks found keep digging
+                        No blocks found
                     </div>
                 </template>
                 <template v-else>
@@ -669,6 +667,7 @@
 </q-modal>
 </template>
 
+
 <script>
 import Vue from "vue"
 import { required, between } from "vuelidate/lib/validators"
@@ -694,7 +693,7 @@ export default {
                 {label: "Dashboard", value: "main", icon: "dashboard"},
                 {label: "Workers", value: "workers", icon: "person"},
                 {label: "Blocks", value: "blocks", icon: "view_list"},
-                {label: "Stats", value: "stats", icon: "view_list"}, //stats button added
+                {label: "Stats", value: "stats", icon: "view_list"},
             ]
             return tabs
         },
@@ -776,8 +775,8 @@ export default {
             }
             return "Select wallet address"
         },
-        settings_changed: function () {
-            this.settings.mining.uniform = !this.enableStats
+       settings_changed: function () {
+           this.settings.mining.uniform = !this.enableStats
             return this.currentSettings != JSON.stringify(this.settings)
         },
         cols_workers_visible: function() {
@@ -901,9 +900,9 @@ export default {
                 bindPort: { between: between(1024, 65535) },
             },
             varDiff: {
-                startDiff: { between: between(1000, 10000000) },
-                minDiff: { between: between(1000, 10000000) },
-                maxDiff: { between: between(1000, 10000000) },
+                startDiff: { between: between(1000, 1000000) },
+                minDiff: { between: between(1000, 1000000) },
+                maxDiff: { between: between(1000, 1000000) },
                 targetTime: { between: between(15, 600) },
                 retargetTime: { between: between(30, 1200) },
                 variancePercent: { between: between(20, 80) },
@@ -938,7 +937,7 @@ export default {
                 server: {
                     enabled: false,
                     bindIP: "0.0.0.0",
-                    bindPort: 10333,
+                    bindPort: 3333,
                 },
                 mining: {
                     address: "",
@@ -948,11 +947,11 @@ export default {
                     enabled: true,
                     startDiff: 5000,
                     minDiff: 1000,
-                    maxDiff: 10000000,
-                    targetTime: 35,
+                    maxDiff: 1000000,
+                    targetTime: 45,
                     retargetTime: 60,
-                    variancePercent: 35,
-                    maxJump: 50,
+                    variancePercent: 45,
+                    maxJump: 30,
                     fixedDiffSeparator: "."
                 },
             },
@@ -960,11 +959,11 @@ export default {
                 enabled: true,
                 startDiff: 5000,
                 minDiff: 1000,
-                maxDiff: 10000000,
-                targetTime: 35,
+                maxDiff: 1000000,
+                targetTime: 45,
                 retargetTime: 60,
-                variancePercent: 35,
-                maxJump: 50,
+                variancePercent: 45,
+                maxJump: 30,
                 fixedDiffSeparator: "."
             },
             cols_blocks: [
@@ -1130,21 +1129,23 @@ export default {
         Identicon
     }
 }
-//added webview
 onload = () => {
   const webview = document.querySelector('webview')
   const indicator = document.querySelector('.indicator')
+
   const loadstart = () => {
     indicator.innerText = 'loading...'
   }
+
   const loadstop = () => {
     indicator.innerText = ''
   }
+
   webview.addEventListener('did-start-loading', loadstart)
   webview.addEventListener('did-stop-loading', loadstop)
 }
-
 </script>
+
 
 <style lang="scss">
 .notification.danger {
@@ -1221,7 +1222,6 @@ body.dark {
         border-radius: 2px;
     }
 }
-//added for webview
 .noscrollers {
     overflow: hidden;
 }

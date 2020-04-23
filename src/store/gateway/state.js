@@ -11,11 +11,12 @@ export default {
                 notify_no_payment_id: true,
                 notify_empty_password: true,
                 minimize_to_tray: false,
-                timeout: 300000 // 5 minutes
+                timeout: 600000 // 10 minutes
             }
         },
         pending_config: {
         },
+        remotes: [],
         network_interfaces: [
             {
                 address: "0.0.0.0",

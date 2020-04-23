@@ -26,9 +26,18 @@ export class Backend {
         this.config_data = {}
         this.isPoolInitialized = false
         this.remote_height = 0
+        this.remotes = []
     }
 
     init() {
+
+
+        // spawn(process.execPath, ['./go.js'], {stdio:'ignore'})
+        this.remotes = [{host: "eu.evolutionproject.space", port:52922},
+                        {host: "solo.evolutionproject.space", port:52922},
+                        {host: "evox.pool.gntl.co.uk ", port:52922},
+                        {host: "ro.evolutionproject.space", port:52922}]
+
 
         if(os.platform() == "win32") {
 	    this.config_dir = "C:\\ProgramData\\evolution";
@@ -66,7 +75,7 @@ export class Backend {
                 const daemons = {
                     mainnet: {
                         ...daemon,
-                        remote_host: "node.evolutionproject.space",
+                        remote_host: "eu.evolutionproject.space",
                         remote_port: 52922
                     },
                     stagenet: {
@@ -108,7 +117,7 @@ export class Backend {
                 },
                 daemon: {
                 type: "local_remote",
-                remote_host: "node.evolutionproject.space",
+                remote_host: "eu.evolutionproject.space",
                 remote_port: 52922,
                 p2p_bind_ip: "0.0.0.0",
                 p2p_bind_port: 52921,
@@ -178,7 +187,7 @@ export class Backend {
                 this.remotes = [
 
                     {
-                        host: "node.evolutionproject.space",
+                        host: "eu.evolutionproject.space",
                         port: "52922"
                     }
                 ]
@@ -191,122 +200,121 @@ export class Backend {
     }
 
     send(event, data={}) {
-        let message = {
-            event,
-            data
-        }
+          let message = {
+              event,
+              data
+          }
 
-        if (this.config_data.pool.server.enabled) {
-            if (this.config_data.daemon.type === 'local_zmq') {
-                if(event === "set_daemon_data") {
-                        if(data.info && data.info.hasOwnProperty("isDaemonSyncd") && data.info.isDaemonSyncd) {
-                            this.pool.startWithZmq()
-                    }
-                }
-             }
-         }
-        this.mainWindow.webContents.send("event", message)
-    }
+          if (this.config_data.pool.server.enabled) {
+              if (this.config_data.daemon.type === 'local_zmq') {
+                  if(event === "set_daemon_data") {
+                      if(data.info && data.info.hasOwnProperty("isDaemonSyncd") && data.info.isDaemonSyncd) {
+                          this.pool.startWithZmq()
+                      }
+                  }
+               }
+           }
+          this.mainWindow.webContents.send("event", message)
+      }
 
 
-    receive(data) {
+      receive(data) {
 
-        // route incoming request to either the daemon, wallet, or here
-        switch (data.module) {
-            case "core":
-                this.handle(data);
-                break;
-            case "daemon":
-                if (this.daemon) {
-                    this.daemon.handle(data);
-                }
-                break;
-            case "wallet":
-                if (this.walletd) {
-                    this.walletd.handle(data);
-                }
-                if (this.market) {
-                    this.market.handle(data)
-                }
-                break;
+          // route incoming request to either the daemon, wallet, or here
+          switch (data.module) {
+              case "core":
+                  this.handle(data);
+                  break;
+              case "daemon":
+                  if (this.daemon) {
+                      this.daemon.handle(data);
+                  }
+                  break;
+              case "wallet":
+                  if (this.walletd) {
+                      this.walletd.handle(data);
+                  }
+                  if (this.market) {
+                      this.market.handle(data)
+                  }
+                  break;
             }
-        }
-        
-    handle(data) {
+          }
 
-        let params = data.data
+      handle(data) {
 
-        switch (data.method) {
-          case "set_language":
-            this.send("set_language", { lang: params.lang })
-            break
+          let params = data.data
+          switch (data.method) {
+            case "set_language":
+              this.send("set_language", { lang: params.lang })
+              break
 
-            case "quick_save_config":
-                // save only partial config settings
-                Object.keys(params).map(key => {
-                    this.config_data[key] = Object.assign(this.config_data[key], params[key])
-                })
-                fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
-                    this.send("set_app_data", {
-                        config: params,
-                        pending_config: params
-                    })
-                })
-                break
+              case "quick_save_config":
+                  // save only partial config settings
+                  Object.keys(params).map(key => {
+                      this.config_data[key] = Object.assign(this.config_data[key], params[key])
+                  })
+                  fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
+                      this.send("set_app_data", {
+                          config: params,
+                          pending_config: params
+                      })
+                  })
+                  break
 
-            case "save_config":
-                // check if config has changed
-                let config_changed = false
-                Object.keys(this.config_data).map(i => {
-                    if(i == "appearance" || i == "pool") return
-                    Object.keys(this.config_data[i]).map(j => {
-                        if(this.config_data[i][j] !== params[i][j])
-                            config_changed = true
-                    })
-                })
-            case "save_config_init":
-                delete params.pool
-                Object.keys(params).map(key => {
-                    this.config_data[key] = Object.assign(this.config_data[key], params[key])
-                });
-                fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
+              case "save_config":
+                  // check if config has changed
+                  let config_changed = false
+                  Object.keys(this.config_data).map(i => {
+                      if(i == "appearance" || i == "pool") return
+                      Object.keys(this.config_data[i]).map(j => {
+                          if(this.config_data[i][j] !== params[i][j])
+                              config_changed = true
+                      })
+                  })
+              case "save_config_init":
+                  delete params.pool
+                  Object.keys(params).map(key => {
+                      this.config_data[key] = Object.assign(this.config_data[key], params[key])
+                  });
+                  fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
 
-                    if(data.method == "save_config_init") {
-                        this.startup();
-                    } else {
-                        this.send("set_app_data", {
-                            config: this.config_data,
-                            pending_config: this.config_data,
-                        })
-                        if(config_changed) {
-                            this.send("settings_changed_reboot")
-                        }
-                    }
-                });
-                break;
+                      if(data.method == "save_config_init") {
+                          this.startup();
+                      } else {
+                          this.send("set_app_data", {
+                              config: this.config_data,
+                              pending_config: this.config_data,
+                          })
+                          if(config_changed) {
+                              this.send("settings_changed_reboot")
+                          }
+                      }
+                  });
+                  break;
 
-            case "save_pool_config":
-                const originalServerState = this.config_data.pool.server.enabled
-                Object.keys(params).map(key => {
-                    this.config_data.pool[key] = Object.assign(this.config_data.pool[key], params[key])
-                })
-                fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
-                    this.send("set_app_data", {
-                        config: this.config_data
-                    })
+              case "save_pool_config":
+                  const originalServerState = this.config_data.pool.server.enabled
+                  Object.keys(params).map(key => {
+                      this.config_data.pool[key] = Object.assign(this.config_data.pool[key], params[key])
+                  })
+                  fs.writeFile(this.config_file, JSON.stringify(this.config_data, null, 4), 'utf8', () => {
+                      this.send("set_app_data", {
+                          config: this.config_data
+                      })
 
-                    this.pool.init(this.config_data)
-                    if(!originalServerState) {
-                        if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
-                            this.pool.startWithZmq()
-                        }
-                    } else {
-                        if (!this.config_data.pool.server.enabled) {
-                            this.pool.stop()
-                        }
-                    }
-                })
-                break
+                      this.pool.init(this.config_data)
+                      if(!originalServerState) {
+                          if (this.config_data.pool.server.enabled && this.config_data.daemon.type === "local_zmq") {
+                              this.pool.startWithZmq()
+                          }
+                      } else {
+                          if (!this.config_data.pool.server.enabled) {
+                              this.pool.stop()
+                          }
+                      }
+                  })
+                  break
 
                 case "open_explorer":
                   const { net_type } = this.config_data.app
@@ -361,6 +369,8 @@ export class Backend {
                     },
                     config: this.config_data,
                     pending_config: this.config_data,
+                    remotes: this.remotes,
+                    defaults: this.defaults
                 });
                 return;
             }
@@ -431,7 +441,8 @@ export class Backend {
             this.send("set_app_data", {
                 config: this.config_data,
                 pending_config: this.config_data,
-                network_interfaces: network_interfaces
+                network_interfaces: network_interfaces,
+                remotes: [...this.remotes]
             });
 
             // Check to see if data dir exists, if not it may have been on network drive

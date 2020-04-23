@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col">
                         <small>
-                            Imput the amount of time before wallet kick you out.  Privacy Security
+                            Amount of time with no user input before logging out of open wallets
                         </small>
                     </div>
                 </div>
@@ -160,7 +160,6 @@ export default {
             timeout: 10,
             isVisible: false,
             enableGetPeers: false
-
         }
     },
     mounted: function () {
@@ -244,8 +243,7 @@ export default {
                 } else {
                     this.enableGetPeers = false
                     this.$gateway.send("daemon", "get_peers", {enabled: false})
-
-                    }
+                }
             }
             if (!value) {
                 this.enableGetPeers = value

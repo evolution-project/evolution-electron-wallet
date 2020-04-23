@@ -65,8 +65,7 @@ export class Pool {
     }
 
     init(options) {
-      if(this.daemon_type == "remote") {          
-//        if(this.daemon_type.includes("remote")) {   // this stops the solo mining in local + remote
+        if(this.daemon_type == "remote") {
             return false
         }
 
@@ -75,7 +74,6 @@ export class Pool {
         this.port = options.daemon.rpc_bind_port
 
         try {
-
             this.sendStatus(0)
             if(this.database.db == null) {
                 this.database.start()
@@ -93,6 +91,7 @@ export class Pool {
 
             let update_work = false
             if(!start && this.active) {
+
                 if(this.config.mining.address != options.pool.mining.address) {
                     update_work = true
                 }
@@ -114,6 +113,7 @@ export class Pool {
             this.connections = {}
 
             this.BlockTemplateParameters = this.calculateBlockTemplateParameters()
+
             const wallet_address = this.config.mining.address;
             this.address_abbr = `${wallet_address.substring(0, 5)}...${wallet_address.substring(wallet_address.length - 5)}`
 
@@ -148,11 +148,11 @@ export class Pool {
             this.isPoolRunning = true
             logger.log("info", "Starting pool with ZMQ")
             this.startZMQ(this.backend.config_data.daemon)
-
             let getblocktemplate = {"jsonrpc": "2.0",
                    "id": "1",
                    "method": "get_block_template",
                    "params": this.BlockTemplateParameters}
+
             this.dealer.send(['', JSON.stringify(getblocktemplate)])
             this.startHeartbeat()
             this.startServer().then(() => {
@@ -220,7 +220,7 @@ export class Pool {
     checkHeight() {
         let url = "https://explorer.evolutionproject.space/api/networkinfo"
         if(this.testnet) {
-            url = "https://stageblocks.evolutionproject.space/api/networkinfo"
+            url = "https://stageblocks.arqma.com/api/networkinfo"
         }
         return request(url)
     }
@@ -252,13 +252,10 @@ export class Pool {
             this.watchdog()
         }, 240000)
         this.watchdog()
-
         if(this.daemon_type !== "local_zmq")
-
             this.startJobRefreshInterval()
-        
-            this.startRetargetInterval()
 
+        this.startRetargetInterval()
     }
 
     randomBetween(min, max) {
@@ -344,7 +341,7 @@ export class Pool {
         if(this.intervals.retarget) {
             clearInterval(this.intervals.retarget)
         }
-        const retargetTime = this.config ? this.config.varDiff.retargetTime : 30
+        const retargetTime = this.config ? this.config.varDiff.retargetTime : 60
         this.intervals.retarget = setInterval(() => {
             for(let connection_id in this.connections) {
                 const miner = this.connections[connection_id]
@@ -629,13 +626,11 @@ export class Pool {
 
     calculateBlockTemplateParameters() {
         return {wallet_address: this.config.mining.address,
-                reserve_size: (true || Object.keys(this.connections).length > 128) ? 8 : 1}
+                reserve_size: 1 }
     }
 
     addBlockAndInformMiners(data, force=false) {
         try {
-
-            const uniform = true || Object.keys(this.connections).length > 128
             if(data.hasOwnProperty("error")) {
                 logger.log("error", "Error polling get_block_template %j", [data.error.message])
                 return data.error.message
@@ -644,11 +639,9 @@ export class Pool {
 
             if(this.blocks == null || this.blocks.current == null || this.blocks.current.height < block.height || force) {
 
-                logger.log("info", "New block to mine { address: %s, height: %d, difficulty: %d, uniform: %s }", [this.address_abbr, block.height, block.difficulty, uniform])
-
+                logger.log("info", "New block to mine { address: %s, height: %d, difficulty: %d, uniform: %s }", [this.address_abbr, block.height, block.difficulty, true])
                 this.sendStatus(2)
-
-                this.blocks.current = new Block(this, block, uniform)
+                this.blocks.current = new Block(this, block, false)
 
                 this.blocks.valid.push(this.blocks.current)
 
@@ -667,7 +660,6 @@ export class Pool {
     }
 
     getBlock(force=false) {
-
         return new Promise((resolve, reject) => {
             this.sendRPC("get_block_template", this.BlockTemplateParameters).then(data => {
                 const result = this.addBlockAndInformMiners(data, force)
