@@ -3,7 +3,7 @@ name: Evolution Electron Wallet Build and PUB
 on:
     push:
         branches:
-            - master
+            - dev
 
 jobs:
     build:
