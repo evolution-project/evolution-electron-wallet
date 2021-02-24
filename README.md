@@ -8,8 +8,9 @@ Big Thanks to ArQmA team for support.
   
   
 
-  #### Pre-requisites
-- Download latest [evolutiond](https://github.com/evolution-project/evolution/releases/latest) 
+#### Pre-requisites
+
+- Download latest daemon [evolutiond](https://github.com/evolution-project/evolution/releases/latest)
 
 #### Commands
 ```
