@@ -35,7 +35,8 @@ export class Backend {
         // spawn(process.execPath, ['./go.js'], {stdio:'ignore'})
         this.remotes = [{host: "us.evolutionproject.space", port:52922},
                         {host: "solo.evolutionproject.space", port:52922},
-                        {host: "eu.evolutionproject.space", port:52922}]
+                        {host: "eu.evolutionproject.space", port:52922},
+                        {host: "asia.evolutionproject.space", port:52922}]
 
 
         if(os.platform() == "win32") {
